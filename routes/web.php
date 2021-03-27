@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControllerPosts;
-
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\Cors;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,20 +21,21 @@ Route::get('/', function () {
 Route::group([
     'module' => 'Api',
     'prefix'=>'auth',
-    'namespace' => "\App\Http\Controllers"
+    'namespace' => "\App\Http\Controllers",
+    'middleware'=>["cors"]
 ], function () {
     Route::post('/register', 'UserController@register');
-    Route::post('/login', 'UserController@login');
+    Route::post('/login',[UserController::class,"login"]);
     Route::post('/logout', 'UserController@logout');
-
 });
+
 Route::group([
     'module' => 'Api',
     'prefix'=>'post',
     'middleware' => ["jwt.auth"]
 ], function () {
-    Route::post('/create',[ControllerPosts::class,"create"]);
-    Route::post('/update',[ControllerPosts::class,"update"]);
-    Route::get('/delete',[ControllerPosts::class,"delete"]);
+    Route::post('/update',[ControllerPosts::class,"update"])->middleware(Cors::class);
+    Route::get('/delete',[ControllerPosts::class,"delete"])->middleware(Cors::class);
 });
-Route::get('post/show',[ControllerPosts::class,"show"])->middleware("cors");;
+Route::post('post/create',[ControllerPosts::class,"create"])->middleware('cors');
+Route::get('post/show',[ControllerPosts::class,"show"])->middleware('cors');

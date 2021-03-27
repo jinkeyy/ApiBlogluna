@@ -14,6 +14,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cookie;
 class UserController extends Controller
 {
     private $user;
@@ -43,7 +44,7 @@ class UserController extends Controller
         $token = null;
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['invalid_email_or_password'], 422);
+                return response()->json(['error'=>"failed"], 422);
             }
         } catch (JWTException $e) {
             return response()->json(['failed_to_create_token'], 500);
@@ -54,7 +55,7 @@ class UserController extends Controller
                 "token"=>$token,
                 "username"=> $users[0]->username,
             ]
-        );
+            );
     }
     public function logout(Request $request) {
         $tokenString = $request->header("Authorization");

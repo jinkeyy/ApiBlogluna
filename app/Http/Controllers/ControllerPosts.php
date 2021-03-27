@@ -20,10 +20,11 @@ class ControllerPosts extends Controller{
         foreach($result as $item){
             $item->createAt=date("g:i a, d-m-Y", $item->createAt);
         }
-        echo json_encode($result);
+        return response()->json(($result));
+        //  json_encode($result);
     }
     public function create(Request $request){
-        date_default_timezone_set('Asia/Ha_Noi');
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
         $title = $request->input("title");
         $content = $request->input("content");
         $id = "1";   
@@ -42,7 +43,7 @@ class ControllerPosts extends Controller{
                 echo $e;
             }           
         }else{
-            return "success";
+            return "fail";
         }
     }
     public function delete(Request $request){
