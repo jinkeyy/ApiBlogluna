@@ -36,6 +36,7 @@ Route::group([
 ], function () {
     Route::post('/update',[ControllerPosts::class,"update"])->middleware(Cors::class);
     Route::get('/delete',[ControllerPosts::class,"delete"])->middleware(Cors::class);
+    Route::post('/create',[ControllerPosts::class,"create"])->middleware('cors');
 });
-Route::post('post/create',[ControllerPosts::class,"create"])->middleware('cors');
+
 Route::get('post/show',[ControllerPosts::class,"show"])->middleware('cors');
